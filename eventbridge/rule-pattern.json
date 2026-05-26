@@ -1,0 +1,33 @@
+{
+  "Comment": "EventBridge rule pattern for GuardDuty findings — routes MEDIUM and HIGH severity (>= 4) to both SNS and Lambda simultaneously",
+  "Rule": {
+    "Name": "guardduty-high-severity-response",
+    "Description": "Routes GuardDuty findings with severity >= 4 to SNS alerting and Lambda auto-remediation",
+    "EventBusName": "default",
+    "State": "ENABLED",
+    "EventPattern": {
+      "source": ["aws.guardduty"],
+      "detail-type": ["GuardDuty Finding"],
+      "detail": {
+        "severity": [{ "numeric": [">=", 4] }]
+      }
+    },
+    "Targets": [
+      {
+        "Id": "guardduty-alerts",
+        "Description": "SNS topic — delivers full JSON finding payload to analyst email",
+        "Arn": "arn:aws:sns:us-east-2:299763761541:guardduty-alerts"
+      },
+      {
+        "Id": "guardduty-auto-response",
+        "Description": "Lambda function — auto-remediates HIGH severity findings (>= 7)",
+        "Arn": "arn:aws:lambda:us-east-2:299763761541:function:guardduty-auto-response"
+      }
+    ]
+  },
+  "SeverityScale": {
+    "LOW": "1-3 — informational, logged only, not routed by this rule",
+    "MEDIUM": "4-6 — notable, triggers SNS alert + Lambda logging (no destructive action)",
+    "HIGH": "7-10 — critical, triggers SNS alert + Lambda auto-isolation of compromised EC2"
+  }
+}
