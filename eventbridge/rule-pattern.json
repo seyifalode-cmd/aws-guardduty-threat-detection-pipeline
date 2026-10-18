@@ -16,12 +16,12 @@
       {
         "Id": "guardduty-alerts",
         "Description": "SNS topic — delivers full JSON finding payload to analyst email",
-        "Arn": "arn:aws:sns:us-east-2:299763761541:guardduty-alerts"
+        "Arn": "arn:aws:sns:us-east-2:<ACCOUNT_ID>:guardduty-alerts"
       },
       {
         "Id": "guardduty-auto-response",
         "Description": "Lambda function — auto-remediates HIGH severity findings (>= 7)",
-        "Arn": "arn:aws:lambda:us-east-2:299763761541:function:guardduty-auto-response"
+        "Arn": "arn:aws:lambda:us-east-2:<ACCOUNT_ID>:function:guardduty-auto-response"
       }
     ]
   },

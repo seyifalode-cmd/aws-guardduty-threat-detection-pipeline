@@ -174,8 +174,8 @@ Amazon SNS handles the human-facing side of the pipeline. When EventBridge route
 
 **Configuration:**
 - Topic name: `guardduty-alerts` | Type: Standard | Region: us-east-2
-- ARN: `arn:aws:sns:us-east-2:299763761541:guardduty-alerts`
-- Subscription: Email → seyi.falode@yahoo.com | Status: Confirmed
+- ARN: `arn:aws:sns:us-east-2:<ACCOUNT_ID>:guardduty-alerts`
+- Subscription: Email → my alert inbox | Status: Confirmed
 
 > **Production note:** Confirmation email landed in Yahoo Junk — whitelist AWS notification emails (`no-reply@sns.amazonaws.com`) in any production deployment.
 
@@ -289,7 +289,7 @@ CloudTrail captures every API call made in the account. When Lambda auto-remedia
 
 **Trail Configuration:**
 - Trail name: `guardduty-audit-trail` | Region: us-east-2 | Multi-region: Yes
-- S3 bucket: `guardduty-audit-logs-299763761541` — auto-provisioned during trail setup
+- S3 bucket: `guardduty-audit-logs-<ACCOUNT_ID>` — auto-provisioned during trail setup
 - CloudWatch Logs integration: Enabled — real-time alerting on specific API patterns
 - Log file validation: Enabled — detects tampering with stored log files
 - Status: Logging
@@ -307,7 +307,7 @@ A CloudWatch dashboard named `GuardDuty-Detection-Pipeline` provides real-time v
 **Dashboard Metrics:**
 - `IncomingBytes` — volume of log data flowing into the CloudTrail log group
 - `IncomingLogEvents` — number of individual log events being ingested per minute
-- Log groups monitored: `aws-cloudtrail-logs-299763761541-37511b37` and `detection-lab-cloudtrail-logs`
+- Log groups monitored: `aws-cloudtrail-logs-<ACCOUNT_ID>-37511b37` and `detection-lab-cloudtrail-logs`
 
 ![CloudWatch Homepage](screenshots/screenshot-19-cloudwatch-homepage.jpg)
 
@@ -338,7 +338,7 @@ With all eight components wired together, the pipeline was tested by generating 
 |---|---|
 | Total sample findings generated | 391 across all severity levels and finding types |
 | EventBridge firing | Fired for all MEDIUM and HIGH findings (severity >= 4) |
-| SNS alert emails received | 8 emails at seyi.falode@yahoo.com within seconds |
+| SNS alert emails received | 8 emails delivered to my alert inbox within seconds |
 | Alert payload | Full JSON finding payloads including resource details, timestamps, MITRE mappings |
 | Lambda invocation | Invoked for HIGH severity findings — execution logs confirmed in CloudWatch |
 
